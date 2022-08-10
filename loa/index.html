@@ -43,7 +43,39 @@
     billion books as my ultimate target. Ohh how naive I was.
 </p>
 <p>
-    Next day, after waking up, I immediately started typing on my old and trustworthy PC. //TODO
+    Next day, after waking up, I immediately started typing on my old and trustworthy PC. Because I have a very T-shaped
+    knowledge in <b>Java</b>, the language of choice for this project was immediately determined. Also, because I like
+    to create small prototypes to understand the problem I need to solve, I immediately started with one.
+</p>
+<p>
+    The goal of the prototype was simple. I "just" wanted to download 10.000 documents to understand how hard it is to
+    collect and kind of archive them. The immediate problem was that I didn't know where can I get links for this much
+    amount of files that I need. Obviously, <a href="https://en.wikipedia.org/wiki/Site_map">sitemaps</a> can be useful
+    in this scenario. However, there are a couple of reasons why it is not too useful in this case. Most of the time it
+    doesn't contain the documents, or at least not all of them. Also, I would need to get a domain list to download the
+    sitemaps for etc. The immediate thing that came into my mind that it is a lot of hassle and there must be an easier
+    way. This is when the <a href="https://commoncrawl.org/">Common Crawl</a> project came into the view.
+</p>
+
+<h3>Common crawl</h3>
+
+<p>
+    Common Crawl is a project that contains hundreds of terabytes of HTML source code from websites that were <a
+        href="https://en.wikipedia.org/wiki/Web_crawler">crawled</a> by the project. They publish a new set of crawl
+    data at the beginning of each month.
+</p>
+<p>
+    It sounded exactly like the data that I needed. There was just one thing left to do. Grab the files and parse them
+    with a HTML parser. This was the time when I realized that no matter what I do, it's not going to be an easy ride.
+    When I downloaded the first entry provided by the Common Crawl project, I noticed that it was saved in a strange
+    file format called <a href="https://en.wikipedia.org/wiki/Web_ARChive">WARC</a>.
+</p>
+<p>
+    I found one Java library on <a href="https://github.com/Mixnode/mixnode-warcreader-java">Github</a> (thanks Mixnode)
+    that was able to read these files. Unfortunately it was not maintained for the pas couple of years. I picked it up
+    and <a href="https://github.com/laxika/java-warc">forked it</a> to make it a little easier to use. (A couple of
+    years later this repo was <a href="https://github.com/bottomless-archive-project/java-warc">moved under</a> the
+    Bottomless Archive project as well.)
 </p>
 </body>
 </html>
