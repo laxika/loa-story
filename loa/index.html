@@ -72,10 +72,21 @@
 </p>
 <p>
     I found one Java library on <a href="https://github.com/Mixnode/mixnode-warcreader-java">Github</a> (thanks Mixnode)
-    that was able to read these files. Unfortunately it was not maintained for the pas couple of years. I picked it up
+    that was able to read these files. Unfortunately it was not maintained for the past couple of years. I picked it up
     and <a href="https://github.com/laxika/java-warc">forked it</a> to make it a little easier to use. (A couple of
     years later this repo was <a href="https://github.com/bottomless-archive-project/java-warc">moved under</a> the
     Bottomless Archive project as well.)
+</p>
+<p>
+    Finally, at this point I was able to go through a bunch of webpages (parsing them in the process with <a
+        href="https://jsoup.org/">JSoup</a>), grab all the links that contained pdf files
+    based on the file extension then download them. Unsurprisingly, most of the pages (~60-80%) ended up being
+    unavailable (<a href="https://en.wikipedia.org/wiki/HTTP_404#Soft_404">404 Not Found</a> and friends). After a quick
+    cup of coffee I got the 10.000 documents on my hard drive. This is when I realized that I have one more problem to
+    solve.
+</p>
+<p>
+    So, when I started to open the documents, a lot of them was simply fail to open. //TODO
 </p>
 </body>
 </html>
