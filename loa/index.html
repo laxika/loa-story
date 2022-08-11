@@ -148,11 +148,39 @@
         to solve.
     </p>
     <p>
-        So, when I started to open the documents, a lot of them was simply failed to open. //TODO
+        So, when I started to view the documents, a lot of them simply failed to open. I had to look around for a
+        library that could verify PDF documents. I had some experience with <a
+            href="https://pdfbox.apache.org/">PDFBox</a> in the past, so it seemed to be a good go-to solution. It had
+        no way to verify documents by default, but it could open and parse them and that was enough to filter out the
+        incorrect ones. It felt a little-bit strange just to read the whole PDF into the memory to verify if it is
+        correct or not, but hey I needed a simple fix for now and it worked really well.
+    </p>
+    <p>
+        After doing a re-run, I came to the conclusion that 10.000 document can fit on around 1.5 GB of space. That's
+        not too bad I thought. Let's crawl more because it sounds like a lot of fun. I left my PC there for about half
+        an hour, just to test the app a bit more.
     </p>
 
     <h2>Okay, now what?</h2>
 
+    <p>
+        While running the test, I quickly realized that I get suboptimal download speed because the documents were
+        processed on just one thread. It was time to parallelize our processes, but to do that first it was needed to
+        synchronize the URL link generation and the downloading of documents. It makes no sense to generate 10.000 URLs
+        per second in the memory while we can only download from 10 locations per second. We will just fill our memory
+        with a bunch of URLs and get an OOM error pretty quickly. It was the time to split up our application and
+        introduce a datastore that can act as an intermediate meeting plac between the two applications. Let me
+        introduce MySQL for you all.
+    </p>
+    <p>
+        Was splitting up the application a good idea? Absolutely! What about introducing MySQL? You can make a guess
+        right now. What do you think, how can MySQL handle a couple of hundred million strings in one table? Let me help
+        you. It was a failure. But I didn't know that at the time, so let's proceed with the integration of the said
+        database. After the app was split into two, and the generator application saved the URLs into a table (with a
+        flag that can determine if the location was visited or not) the download application was able to visit them.
+        Guess what? When I ran the whole app overnight, I got hundreds of thousands of documents saved next morning (my
+        500 Mbps connection was super awesome back then).
+    </p>
     <!-- How to scale the app... -->
 </div>
 </body>
