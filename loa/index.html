@@ -4,25 +4,31 @@
 <head>
     <title>My story on how to build digital library on a terabyte scale.</title>
 
+    <link rel='stylesheet' id='googleFontbody-css' href='https://fonts.googleapis.com/css?family=PT+Serif:400,700'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='googleFontHeading-css' href='https://fonts.googleapis.com/css?family=PT+Serif:400,700'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='googleFontMenu-css' href='https://fonts.googleapis.com/css?family=PT+Serif:400,700'
+          type='text/css' media='all'/>
+
     <style>
         :root {
-            --bg-color: #FFCCAA;
-            --title-color: #804015;
+            --primary-bg-color: #F4F4F4;
+            --secondary-bg-color: #FFFFFF;
+            --title-color: #444444;
+            --border-color: #e6e6e6;
         }
 
         body {
-            background-color: var(--bg-color);
-            margin: auto;
-            width: 1400px;
+            background-color: var(--primary-bg-color);
+            font-family: PT Serif, "Helvetica Neue", Arial, Helvetica, Verdana, sans-serif;
         }
 
         h1, h2, h3 {
-            font-family: Helvetica, sans-serif;
             font-weight: 600;
             margin-bottom: 25px;
             margin-left: 70px;
             color: var(--title-color);
-            letter-spacing: -2px;
         }
 
         h1 {
@@ -38,105 +44,116 @@
         }
 
         p {
-            font-size: 16px;
-            font-family: Helvetica, serif;
+            font-size: 18px;
             font-weight: 400;
-            margin: 25px 100px 25px 100px;
-            line-height: 125%;
+            margin: 25px 100px 18px;
+            line-height: 1.85em;
+            color: #525452;
         }
 
         a {
             color: var(--title-color);
         }
+
+        .container {
+            background: var(--secondary-bg-color);
+            border: 1px solid var(--border-color);
+            width: 1080px;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
-<h1>My story on how to build digital library on a terabyte scale.</h1>
+<div class="container">
+    <h1>My story on how to build digital library on a terabyte scale.</h1>
 
-<!-- TODO: TOC -->
+    <!-- TODO: TOC -->
 
-<h2>What is this page</h2>
+    <h2>What is this page</h2>
 
-<p>
-    This page describes how I created the <b><a
-        href="https://github.com/bottomless-archive-project/library-of-alexandria">Library of Alexandria</a></b>
-    project. The project consist of an application suite that can enable its users to crawl, index and search hundreds
-    of millions of documents, creating a library on epic proportions using only commodity hardware.
-</p>
+    <p>
+        This page describes how I created the <b><a
+            href="https://github.com/bottomless-archive-project/library-of-alexandria">Library of Alexandria</a></b>
+        project. The project consist of an application suite that can enable its users to crawl, index and search
+        hundreds of millions of documents, creating a library on epic proportions using only commodity hardware.
+    </p>
 
-<h2>The beginning</h2>
-<p>
-    On a Friday night, after work, most people usually watch football, go to the gym or doing something useful with
-    their life. Not everyone tough. I was an exception to this rule. As an introvert, I spent the last part of my day
-    sitting in my room, reading an utterly boring sounding book called <a
-        href="https://en.wikipedia.org/wiki/Epistulae_Morales_ad_Lucilium">"Moral letters to Lucilius"</a>. It was
-    written by some <a href="https://en.wikipedia.org/wiki/Seneca_the_Younger">old dude</a>
-    thousands of years ago. Definitely not the most fun sounding book fora Friday night. However, after reading it for
-    about an hour, I realized that the title might be boring, but the contents are almost literally gold. Too bad there
-    are not too many of these books survived the test of time.
-</p>
-<p>
-    Realizing this unfortunate fact was my trigger event to start to work on this project. On that day, after a quick
-    Google search I realized that only <a href="https://en.wikipedia.org/wiki/Lost_literary_work">less than 1% of
-    ancient texts</a> survived to the modern day.
-</p>
+    <h2>The beginning</h2>
+    <p>
+        On a Friday night, after work, most people usually watch football, go to the gym or doing something useful with
+        their life. Not everyone tough. I was an exception to this rule. As an introvert, I spent the last part of my
+        day sitting in my room, reading an utterly boring sounding book called <a
+            href="https://en.wikipedia.org/wiki/Epistulae_Morales_ad_Lucilium">"Moral letters to Lucilius"</a>. It was
+        written by some <a href="https://en.wikipedia.org/wiki/Seneca_the_Younger">old dude</a> thousands of years ago.
+        Definitely not the most fun sounding book fora Friday night. However, after reading it for about an hour, I
+        realized that the title might be boring, but the contents are almost literally gold. Too bad there are not too
+        many of these books survived the test of time.
+    </p>
+    <p>
+        Realizing this unfortunate fact was my trigger event to start to work on this project. On that day, after a
+        quick Google search I realized that only <a href="https://en.wikipedia.org/wiki/Lost_literary_work">less than 1%
+        of ancient texts</a> survived to the modern day.
+    </p>
 
-<h2>But how?</h2>
-<p>
-    At this point I had a couple (more like a dozen) failed projects under my belt, so I was not too fond to start
-    working on a new one. I had to motivate myself. After I set the target of saving as many documents as possible, I
-    wanted to have a more tangible but quite hard to achieve goal. I set a 100 million books as my initial goal, and a
-    billion books as my ultimate target. Ohh how naive I was.
-</p>
-<p>
-    Next day, after waking up, I immediately started typing on my old and trustworthy PC. Because I have a very T-shaped
-    knowledge in <b>Java</b>, the language of choice for this project was immediately determined. Also, because I like
-    to create small prototypes to understand the problem I need to solve, I immediately started with one.
-</p>
-<p>
-    The goal of the prototype was simple. I "just" wanted to download 10.000 documents to understand how hard it is to
-    collect and kind of archive them. The immediate problem was that I didn't know where can I get links for this much
-    amount of files that I need. Obviously, <a href="https://en.wikipedia.org/wiki/Site_map">sitemaps</a> can be useful
-    in this scenario. However, there are a couple of reasons why it is not too useful in this case. Most of the time it
-    doesn't contain the documents, or at least not all of them. Also, I would need to get a domain list to download the
-    sitemaps for etc. The immediate thing that came into my mind that it is a lot of hassle and there must be an easier
-    way. This is when the <a href="https://commoncrawl.org/">Common Crawl</a> project came into the view.
-</p>
+    <h2>But how?</h2>
+    <p>
+        At this point I had a couple (more like a dozen) failed projects under my belt, so I was not too fond to start
+        working on a new one. I had to motivate myself. After I set the target of saving as many documents as possible,
+        I wanted to have a more tangible but quite hard to achieve goal. I set a 100 million books as my initial goal,
+        and a billion books as my ultimate target. Ohh how naive I was.
+    </p>
+    <p>
+        Next day, after waking up, I immediately started typing on my old and trustworthy PC. Because I have a very
+        T-shaped knowledge in <b>Java</b>, the language of choice for this project was immediately determined. Also,
+        because I like to create small prototypes to understand the problem I need to solve, I immediately started with
+        one.
+    </p>
+    <p>
+        The goal of the prototype was simple. I "just" wanted to download 10.000 documents to understand how hard it is
+        to collect and kind of archive them. The immediate problem was that I didn't know where can I get links for this
+        much amount of files that I need. Obviously, <a href="https://en.wikipedia.org/wiki/Site_map">sitemaps</a> can
+        be useful in this scenario. However, there are a couple of reasons why it is not too useful in this case. Most
+        of the time it doesn't contain the documents, or at least not all of them. Also, I would need to get a domain
+        list to download the sitemaps for etc. The immediate thing that came into my mind that it is a lot of hassle and
+        there must be an easier way. This is when the <a href="https://commoncrawl.org/">Common Crawl</a> project came
+        into the view.
+    </p>
 
-<h3>Common crawl</h3>
+    <h3>Common crawl</h3>
 
-<p>
-    Common Crawl is a project that contains hundreds of terabytes of HTML source code from websites that were <a
-        href="https://en.wikipedia.org/wiki/Web_crawler">crawled</a> by the project. They publish a new set of crawl
-    data at the beginning of each month.
-</p>
-<p>
-    It sounded exactly like the data that I needed. There was just one thing left to do. Grab the files and parse them
-    with a HTML parser. This was the time when I realized that no matter what I do, it's not going to be an easy ride.
-    When I downloaded the first entry provided by the Common Crawl project, I noticed that it was saved in a strange
-    file format called <a href="https://en.wikipedia.org/wiki/Web_ARChive">WARC</a>.
-</p>
-<p>
-    I found one Java library on <a href="https://github.com/Mixnode/mixnode-warcreader-java">Github</a> (thanks Mixnode)
-    that was able to read these files. Unfortunately it was not maintained for the past couple of years. I picked it up
-    and <a href="https://github.com/laxika/java-warc">forked it</a> to make it a little easier to use. (A couple of
-    years later this repo was <a href="https://github.com/bottomless-archive-project/java-warc">moved under</a> the
-    Bottomless Archive project as well.)
-</p>
-<p>
-    Finally, at this point I was able to go through a bunch of webpages (parsing them in the process with <a
-        href="https://jsoup.org/">JSoup</a>), grab all the links that contained pdf files
-    based on the file extension then download them. Unsurprisingly, most of the pages (~60-80%) ended up being
-    unavailable (<a href="https://en.wikipedia.org/wiki/HTTP_404#Soft_404">404 Not Found</a> and friends). After a quick
-    cup of coffee I got the 10.000 documents on my hard drive. This is when I realized that I have one more problem to
-    solve.
-</p>
-<p>
-    So, when I started to open the documents, a lot of them was simply failed to open. //TODO
-</p>
+    <p>
+        Common Crawl is a project that contains hundreds of terabytes of HTML source code from websites that were <a
+            href="https://en.wikipedia.org/wiki/Web_crawler">crawled</a> by the project. They publish a new set of crawl
+        data at the beginning of each month.
+    </p>
+    <p>
+        It sounded exactly like the data that I needed. There was just one thing left to do. Grab the files and parse
+        them with a HTML parser. This was the time when I realized that no matter what I do, it's not going to be an
+        easy ride. When I downloaded the first entry provided by the Common Crawl project, I noticed that it was saved
+        in a strange file format called <a href="https://en.wikipedia.org/wiki/Web_ARChive">WARC</a>.
+    </p>
+    <p>
+        I found one Java library on <a href="https://github.com/Mixnode/mixnode-warcreader-java">Github</a> (thanks
+        Mixnode) that was able to read these files. Unfortunately it was not maintained for the past couple of years. I
+        picked it up and <a href="https://github.com/laxika/java-warc">forked it</a> to make it a little easier to use.
+        (A couple of years later this repo was <a href="https://github.com/bottomless-archive-project/java-warc">moved
+        under</a> the Bottomless Archive project as well.)
+    </p>
+    <p>
+        Finally, at this point I was able to go through a bunch of webpages (parsing them in the process with <a
+            href="https://jsoup.org/">JSoup</a>), grab all the links that contained pdf files based on the file
+        extension then download them. Unsurprisingly, most of the pages (~60-80%) ended up being unavailable (<a
+            href="https://en.wikipedia.org/wiki/HTTP_404#Soft_404">404 Not Found</a> and friends). After a quick
+        cup of coffee I got the 10.000 documents on my hard drive. This is when I realized that I have one more problem
+        to solve.
+    </p>
+    <p>
+        So, when I started to open the documents, a lot of them was simply failed to open. //TODO
+    </p>
 
-<h2>Okay, now what?</h2>
+    <h2>Okay, now what?</h2>
 
-<!-- How to scale the app... -->
+    <!-- How to scale the app... -->
+</div>
 </body>
 </html>
