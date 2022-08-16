@@ -4,12 +4,18 @@
 <head>
     <title>My story on building a digital library aiming for the petabyte scale.</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel='stylesheet' id='googleFontbody-css' href='https://fonts.googleapis.com/css?family=PT+Serif:400,700'
           type='text/css' media='all'/>
     <link rel='stylesheet' id='googleFontHeading-css' href='https://fonts.googleapis.com/css?family=PT+Serif:400,700'
           type='text/css' media='all'/>
     <link rel='stylesheet' id='googleFontMenu-css' href='https://fonts.googleapis.com/css?family=PT+Serif:400,700'
           type='text/css' media='all'/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
+          integrity="sha512-XWTTruHZEYJsxV3W/lSXG1n3Q39YIWOstqvmFsdNEEQfHoZ6vm6E9GK2OrF6DSJSpIbRbi+Nn0WDPID9O7xB2Q=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
     <style>
         :root {
@@ -28,6 +34,7 @@
             font-weight: 600;
             margin-bottom: 25px;
             margin-left: 70px;
+            margin-right: 70px;
             color: var(--title-color);
         }
 
@@ -58,14 +65,23 @@
         .container {
             background: var(--secondary-bg-color);
             border: 1px solid var(--border-color);
-            width: 1080px;
+            border-top: none;
+            max-width: 1080px;
             margin: auto;
         }
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="mb-5">
+        <img class="img-fluid w-100" style="margin-top: 12px;" src="assets/logo-background.png"/>
+    </div>
+
     <h1>My story on building a digital library aiming for the petabyte scale.</h1>
+
+    <div class="mb-5 mt-5">
+        <hr class="w-50" style="margin-left: auto; margin-right: auto;">
+    </div>
 
     <!-- TODO: TOC -->
 
@@ -169,8 +185,8 @@
         synchronize the URL link generation and the downloading of documents. It makes no sense to generate 10.000 URLs
         per second in the memory while we can only download from 10 locations per second. We will just fill our memory
         with a bunch of URLs and get an OOM error pretty quickly. It was the time to split up our application and
-        introduce a datastore that can act as an intermediate meeting plac between the two applications. Let me
-        introduce MySQL for you all.
+        introduce a datastore that can act as an intermediate meeting place between the two applications. Let me
+        introduce <a href="https://www.mysql.com/">MySQL</a> for you all.
     </p>
     <p>
         Was splitting up the application a good idea? Absolutely! What about introducing MySQL? You can make a guess
@@ -181,7 +197,49 @@
         Guess what? When I ran the whole app overnight, I got hundreds of thousands of documents saved next morning (my
         500 Mbps connection was super awesome back then).
     </p>
-    <!-- How to scale the app... -->
+    <p>
+        Now I got a bunch of documents. The feeling was awesome! This was the point when I realized that the original
+        archiving idea can be done on a grand scale. It was good to see a couple of hundred gigabytes of documents on my
+        hard disk, but you know what would be better? Indexing them into a search engine, then having a way to search
+        and view them.Initially I had little experience with indexing big datasets. I used <a
+            href="https://solr.apache.org/">Solr</a> a while ago (like 6 years ago lol) so my initial idea came down to
+        use that for the indexing. However, just by looking around for a bit before starting to work on the
+        implementation I found <a href="https://www.elastic.co/what-is/elasticsearch">Elasticsearch</a>. It seemed to be
+        superior over Solr in almost every way possible (except it was managed by a company but whatever). The major
+        selling point was that it was easier to integrate with. As far as I know, bot of them are just a wrapper around
+        Lucene so the performance should be fairly similar. Maybe once it will be worthwhile to rewrite the application
+        suite to use pure Lucene without actually doing <a href="http://wiki.c2.com/?PrematureOptimization=">premature
+        optimization</a>. However, until then, Elasticsearch is the name of the game.
+    </p>
+    <p>
+        After figuring out how indexing can be done, I immediately started to work. Extended the downloader application
+        with code that indexed the downloaded documents that passed verification, then deleted the existing dataset to
+        free up space and started the whole downloading part yet again in the next night.
+    </p>
+    <p>
+        The indexing worked remarkably well, so I started to work on a web frontend that could be used to search and
+        view the documents. This was (controversially) called as the <i>Backend Application</i> in the beginning, then I
+        quickly renamed it to the more meaningful name of <i>Web Application</i>. I'll use that name in this document to
+        minimize the complexity.
+    </p>
+    <p>
+        Initially the frontend code was written in <a href="https://github.com/angular/angular.js?">AngularJS</a>. Why?
+        Why did I choose an obsolete technology to create the frontend of my next dream project? Because it was
+        something I already understood quite well, I was familiar with and had a lot of experience in. At this stage I
+        just wanted to progress with my proof of concept. Optimizations and cleanups can be done later. Also, I'm a
+        backed guy, so the frontend code should be minimal right? Right?
+    </p>
+    <p>
+        It started out as minimal, that's for sure. Also, because it only used dependencies that can be served by <a
+            href="https://cdnjs.com/">cdnjs</a>, it was easy to build and integrate into a java app.
+    </p>
+
+    <!--
+    finished the frontend
+    tested, and it worked well
+    had to add duplicate detection
+    had to add compression
+    -->
 </div>
 </body>
 </html>
