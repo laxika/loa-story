@@ -164,6 +164,9 @@
         cup of coffee I got the 10.000 documents on my hard drive. This is when I realized that I have one more problem
         to solve.
     </p>
+
+    <h3>Unboxing & validation</h3>
+
     <p>
         So, when I started to view the documents, a lot of them simply failed to open. I had to look around for a
         library that could verify PDF documents. I had some experience with <a
@@ -240,6 +243,59 @@
         It started out as minimal, that's for sure. Also, because it only used dependencies that can be served by <a
             href="https://cdnjs.com/">cdnjs</a>, it was easy to build and integrate into a java app.
     </p>
+    <div class="float-start">
+        <div>
+            <img class="rounded float-start" src="assets/images/xanthoria-parietina.jpg" alt="Xanthoria parietina"
+                 style="margin:18px 18px 0 100px;">
+        </div>
+        <div class="text-center">
+            <small style="margin-left: 100px;"><a href="https://commons.wikimedia.org/wiki/User:Holleday">&copy; Holger
+                Krisp</a> - <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a></small>
+        </div>
+    </div>
+    <p>
+        Soon the frontend was finished and I had some time to actually search and read the documents I collected. I
+        remember that I wanted to search something obscure. I was studying gardening back then, so my first search was
+        for the lichen "Xanthoria parietina". To my surprise, I got back around a hundred documents from a 2.3 million
+        sample size. Honestly, I was surprised. Some of them were quite interesting. Like whom wouldn't want to read
+        the <i>"Detection of polysaccharides and ultrastructural modification of the photobiont cell wall produced by
+        two arginase isolectins from Xanthoria parietina"</i>?
+    </p>
+
+    <h2>Saving space</h2>
+
+    <p>
+        Soon after I got the first couple of million documents I realized that I'll need some space to store them. A LOT
+        of space, actually. Because of this realization, I started to look for ideas that could save me as much space as
+        possible, so I can store as many documents as possible.
+    </p>
+
+    <h3>Deduplication</h3>
+
+    <p>
+        While searching using the web UI, I found a couple of duplicates in the dataset. This was not too problematic in
+        the beginning, but more documents the program downloaded, the more duplicates I saw on the frontend. I had to do
+        something.
+    </p>
+
+    <p>
+        My first idea was to use a <a href="https://en.wikipedia.org/wiki/Bloom_filter">Bloom filter</a>. Initially it
+        felt like a good idea. I initialized a filter with an expectation of 50 million items and a 1% false positive
+        probability. Like what a fool would collect more than 50 million documents? Guess what, I ended up throwing the
+        whole thing into the garbage bin after hitting 5 million documents in a couple of weeks. Who would want to
+        re-size the Bloom filter every time after a new max value is hit? Also 1% of false positives felt way too high.
+    </p>
+
+    <p>
+        The next try was to calculate file <a href="https://en.wikipedia.org/wiki/Checksum">checksums</a>. A checksum is
+        useful to verify file integrity after long time of storage, but it can also be used to detect duplicates.
+    </p>
+
+    After searching for a solution online, I realized that the most effective thing to do was to create a
+    hash for the documents.
+
+    https://en.wikipedia.org/wiki/SHA-2
+    https://en.wikipedia.org/wiki/Hash_collision
 
     <!--
     finished the frontend
