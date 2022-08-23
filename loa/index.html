@@ -282,25 +282,61 @@
         My first idea was to use a <a href="https://en.wikipedia.org/wiki/Bloom_filter">Bloom filter</a>. Initially it
         felt like a good idea. I initialized a filter with an expectation of 50 million items and a 1% false positive
         probability. Like what a fool would collect more than 50 million documents? Guess what, I ended up throwing the
-        whole thing into the garbage bin after hitting 5 million documents in a couple of weeks. Who would want to
-        re-size the Bloom filter every time after a new max value is hit? Also 1% of false positives felt way too high.
+        whole thing into the garbage bin after hitting 5 million files in a couple of weeks. Who would want to
+        re-size the Bloom filter every time after a new max value is hit? Also, 1% of false positives felt way too high.
     </p>
 
     <p>
         The next try was to calculate file <a href="https://en.wikipedia.org/wiki/Checksum">checksums</a>. A checksum is
-        useful to verify file integrity after long time of storage, but it can also be used to detect duplicates.
+        useful to verify file integrity after long time of storage, but it can also be used to detect duplicates. I
+        started with <a href="https://en.wikipedia.org/wiki/MD5">MD5</a> as a hash function to generate the checksums.
+        It is well known that albeit MD5 is super quick, it is broken for password hashing. Still I thought that it can
+        work for files nevertheless. Unfortunately, there is a thing that's called <a
+            href="https://en.wikipedia.org/wiki/Hash_collision">hash-collision</a>.
     </p>
 
-    After searching for a solution online, I realized that the most effective thing to do was to create a
-    hash for the documents.
+    <p>
+        After learning that MD5 can have collisions, especially if we take the <a
+            href="https://en.wikipedia.org/wiki/Birthday_problem">Birthday-problem</a> into consideration, I wanted
+        something better. This is when I realized that with using <a
+            href="https://en.wikipedia.org/wiki/SHA-2">SHA-256</a>, the chance of a collision was significantly lower.
+        Luckily, my code was quite well abstracted, so it was easy to replace the MD5 generation with SHA-256. In the
+        final duplicate detection algorithm, a document can be considered a duplicate if it's <b>file type
+        (extension)</b>, <b>file size</b>, and <b>checksum</b> is the same. After implementing the change, I had to
+        re-crawl all the documents, but finally without duplication.
+    </p>
 
-    https://en.wikipedia.org/wiki/SHA-2
-    https://en.wikipedia.org/wiki/Hash_collision
+    <div class="float-start">
+        <div>
+            <img class="img-fluid" src="assets/images/hash-collision-probabilities.png"
+                 alt="Hash collision probabilities" style="padding-left: 100px; padding-right: 100px;">
+        </div>
+        <div class="text-center">
+            <div style="margin-left: 100px; margin-right: 100px;">
+                <small>
+                    The lighter fields in this table show the number of hashes needed to achieve the given probability
+                    of collision (column) given a hash space of a certain size in bits (row).
+                </small>
+            </div>
+            <div style="margin-left: 100px; margin-right: 100px;">
+                <small>
+                    Using the birthday analogy: the "hash space size" resembles the "available days", the "probability
+                    of collision" resembles the "probability of shared birthday", and the "required number of hashed
+                    elements" resembles the "required number of people in a group".
+                </small>
+            </div>
+            <div>
+                <small>
+                    &copy; <a href="https://en.wikipedia.org/wiki/Birthday_problem">Wikipedia</a> -
+                    <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en_US">CC BY-SA 3.0</a>
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <h3>Compression</h3>
 
     <!--
-    finished the frontend
-    tested, and it worked well
-    had to add duplicate detection
     had to add compression
     -->
 </div>
