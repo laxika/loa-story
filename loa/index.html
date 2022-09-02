@@ -262,7 +262,8 @@
     <p>
         Soon the frontend was finished and I had some time to actually search and read the documents I collected. I
         remember that I wanted to search something obscure. I was studying gardening back then, so my first search was
-        for the lichen <b>"Xanthoria parietina"</b>. To my surprise, I got back around a hundred documents from a 2.3 million
+        for the lichen <b>"Xanthoria parietina"</b>. To my surprise, I got back around a hundred documents from a 2.3
+        million
         sample size. Honestly, I was surprised. Some of them were quite interesting. Like whom wouldn't want to read
         the <i>"Detection of polysaccharides and ultrastructural modification of the photobiont cell wall produced by
         two arginase isolectins from Xanthoria parietina"</i>?
@@ -342,8 +343,51 @@
 
     <h3>Compression</h3>
 
+    <p>
+        Removing duplicates saved a lot of space, but still, I kept acquiring more documents than what I had space for.
+        This made me really desperate to lower the average document size, so I came up with an easy idea to cram more
+        documents to the same space. I planned to compress them.
+    </p>
+
+    <p>
+        There are a couple of ways to compress a PDF document. Or rather a couple of <a
+            href="https://en.wikipedia.org/wiki/Lossless_compression">lossless</a> compression algorithms to be correct.
+    </p>
+
+    <p>
+        The first thing I looked into was the good old <a href="https://en.wikipedia.org/wiki/Deflate">Deflate</a>
+        algorithm with <a href="https://en.wikipedia.org/wiki/Gzip">GZIP</a> as the file format. It had certain
+        advantages. First of all, it was very <b>mature</b> supported by almost anything, including Java (albeit later
+        on I switched to the <a href="https://commons.apache.org/proper/commons-compress/">Apache Compress</a> library
+        for usability reason). Secondly, it was very fast and had an <i>"okay"</i> compression ration.
+    </p>
+
+    <p>
+        GZIP was good enough for most of the time, but when I had spare CPU cycles to use, I wanted to re-compress the
+        documents with something that had a better compression ratio. This was the time when I found out about the <a
+            href="https://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Markov_chain_algorithm">LZMA</a> encoding.
+        Unlike GZIP (which uses a combination of <a href="https://en.wikipedia.org/wiki/LZ77_and_LZ78#LZ77">Z77</a> and
+        <a href="https://en.wikipedia.org/wiki/Huffman_coding">Huffman coding</a>), it does <a
+            href="https://en.wikipedia.org/wiki/Dictionary_coder">dictionary based</a> compression. It is a <b>mostly
+        mature</b> algorithm too, that has excellent compression ratio, good decompression speed but abysmal compression
+        speed. Ideal for long term archival, especially when paired with an extensive amount of free CPU resources.
+    </p>
+
+    <p>
+        The final candidate for compression was <a href="https://en.wikipedia.org/wiki/Brotli">Brotli</a>, a relative
+        new algorithm that was originally intended to replace deflate on the world wide web. It is mainly used by <a
+            href="https://en.wikipedia.org/wiki/Web_server">web servers</a> and <a
+            href="https://en.wikipedia.org/wiki/Content_delivery_network">content delivery networks</a> to serve web
+        data. Unfortunately, I found just one library that supported it in Java (<a
+            href="https://github.com/hyperxpro/Brotli4j">Brotli4J</a>) and even that one was not a real Java rewrite but
+        a wrapper around the <a href="https://github.com/google/brotli">native library</a> provided by Google. It's
+        feels <b>very immature</b>, mostly because it was released in 2015 (unlike Deflate which was released in 1951
+        and LZMA in 1998). But, it provides the best compression ratio out of the tree by far. Unfortunately, the
+        resource usage is very high as well, it is the slowest one on the list. ALso, to function, it requires a native
+        port for each and every operation system. A hustle to deal with.
+    </p>
     <!--
-    had to add compression
+    Switching to MongoDB
     -->
 </div>
 </body>
