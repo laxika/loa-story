@@ -386,9 +386,44 @@
         resource usage is very high as well, it is the slowest one on the list. ALso, to function, it requires a native
         port for each and every operation system. A hustle to deal with.
     </p>
-    <!--
-    Switching to MongoDB
-    -->
+
+    <h3>Welcome MongoDB</h3>
+
+    <p>
+        As described earlier, <a href="https://www.mysql.com/">MySQL</a> was good for a while. For like the first 5-10
+        million documents. Then it started to slow down "significantly" to say the least. Something had to be done,
+        especially because back then my aim was to archive a billion documents. I kept on looking for databases, then
+        realized that what I need is probably a <a href="https://www.geeksforgeeks.org/introduction-to-nosql/">NoSQL</a>
+        database, or something similar. All my database had to do was return me all the data for either a document's or
+        a location's id, support <a href="https://www.mongodb.com/docs/manual/core/index-unique/">unique indexes</a> on
+        certain fields and be able to scale when necessary. My usage pattern was inserting document locations
+        with a hash as the id, or finding documents with combinations of certain fields (document type, file size and
+        hash for deduplication).
+    </p>
+    <p>
+        My first idea was to use <a href="https://redis.io/">Redis</a> for super quick access. How cool is the idea to
+        store everything my database might need in the ram. Until I realized that to do this I would need to use some
+        really awkward primary keys ({documentType}_{documentFileSite}_{documentHash}) to save documents and also my
+        database can get big, really big where even the max memory size available with DDR-4 RAM might not be
+        enough (128 GB).
+    </p>
+    <p>
+        Then I looked into using <a href="https://www.mongodb.com/">MongoDB</a>. It looked like exactly what I need and
+        because I designed a small but useful abstraction layer over my MySQL code, replacing the existing database was
+        close to trivial.
+    </p>
+    <p>
+        As usual, there were a few hiccups that I realized later on. First of all, a couple of weeks later I added a
+        statistics screen that printed not only the number of documents that were collected, but the count of each
+        document type (pdf, doc, etc.) and also the count of each document status (how many are indexed, downloaded,
+        etc.). I thought that this will be easy. A simple select (find in MongoDB terms) combined with a group by then
+        returning the values to the UI. Unfortunately, it is not that easy. MongoDB does aggregations, and those can
+        only run on one core, so even if my "type" and status" fields are indexed, it takes a significant amount of time
+        for one CPU core to sum up a 100 million documents. As far as I know, there is no way to really speed this up. I
+        could do a select and count for each document type (i.e. 8 queries instead of one with a groupby) but that would
+        be only a band-aid. MongoDB should add some kind of partitioning for these queries, otherwise, I'll ned to wait
+        half an hour to get a result when I'll have 1 billion documents (yes, that's still my long term target).
+    </p>
 </div>
 </body>
 </html>
