@@ -102,9 +102,9 @@
         day sitting in my room, reading an utterly boring sounding book called <a
             href="https://en.wikipedia.org/wiki/Epistulae_Morales_ad_Lucilium">"Moral letters to Lucilius"</a>. It was
         written by some <a href="https://en.wikipedia.org/wiki/Seneca_the_Younger">old dude</a> thousands of years ago.
-        Definitely not the most fun sounding book fora Friday night. However, after reading it for about an hour, I
-        realized that the title might be boring, but the contents are almost literally gold. Too bad there are not too
-        many of these books survived the test of time.
+        Definitely not the most fun sounding book for a Friday night. However, after reading it for about an hour, I
+        realized that the title might be boring, but the contents are almost literally gold. Too bad that there were
+        only a couple of these books survived the test of time.
     </p>
     <p>
         Realizing this unfortunate fact was my trigger event to start to work on this project. On that day, after a
@@ -116,8 +116,8 @@
     <p>
         At this point I had a couple (more like a dozen) failed projects under my belt, so I was not too fond to start
         working on a new one. I had to motivate myself. After I set the target of saving as many documents as possible,
-        I wanted to have a more tangible but quite hard to achieve goal. I set a 100 million books as my initial goal,
-        and a billion books as my ultimate target. Ohh how naive I was.
+        I wanted to have a more tangible but quite hard to achieve goal. I set a 100 million documents
+        as my initial goal, and a billion documents as my ultimate target. Ohh how naive I was.
     </p>
     <p>
         Next day, after waking up, I immediately started typing on my old and trustworthy PC. Because I have a very
@@ -128,7 +128,7 @@
     <p>
         The goal of the prototype was simple. I "just" wanted to download 10.000 documents to understand how hard it is
         to collect and kind of archive them. The immediate problem was that I didn't know where can I get links for this
-        much amount of files that I need. Obviously, <a href="https://en.wikipedia.org/wiki/Site_map">sitemaps</a> can
+        many files. Obviously, <a href="https://en.wikipedia.org/wiki/Site_map">sitemaps</a> can
         be useful in this scenario. However, there are a couple of reasons why it is not too useful in this case. Most
         of the time it doesn't contain the documents, or at least not all of them. Also, I would need to get a domain
         list to download the sitemaps for etc. The immediate thing that came into my mind that it is a lot of hassle and
@@ -145,7 +145,7 @@
     </p>
     <p>
         It sounded exactly like the data that I needed. There was just one thing left to do. Grab the files and parse
-        them with a HTML parser. This was the time when I realized that no matter what I do, it's not going to be an
+        them with an HTML parser. This was the time when I realized that no matter what I do, it's not going to be an
         easy ride. When I downloaded the first entry provided by the Common Crawl project, I noticed that it was saved
         in a strange file format called <a href="https://en.wikipedia.org/wiki/Web_ARChive">WARC</a>.
     </p>
@@ -185,12 +185,13 @@
 
     <p>
         While running the test, I quickly realized that I get suboptimal download speed because the documents were
-        processed on just one thread. It was time to parallelize our processes, but to do that first it was needed to
-        synchronize the URL link generation and the downloading of documents. It makes no sense to generate 10.000 URLs
-        per second in the memory while we can only download from 10 locations per second. We will just fill our memory
-        with a bunch of URLs and get an OOM error pretty quickly. It was the time to split up our application and
-        introduce a datastore that can act as an intermediate meeting place between the two applications. Let me
-        introduce <a href="https://www.mysql.com/">MySQL</a> for you all.
+        processed on just one thread. It was time to
+        <a href="https://en.wikipedia.org/wiki/Parallel_computing">parallelize</a> our processes, but to do that first
+        it was needed to synchronize the URL link generation and the downloading of documents. It makes no sense to
+        generate 10.000 URLs per second in the memory while we can only download from 10 locations per second. We will
+        just fill our memory with a bunch of URLs and get an OOM error pretty quickly. It was the time to split up our
+        application and introduce a datastore that can act as an intermediate meeting place between the two
+        applications. Let me introduce <a href="https://www.mysql.com/">MySQL</a> for you all.
     </p>
     <p>
         Was splitting up the application a good idea? Absolutely! What about introducing MySQL? You can make a guess
@@ -208,20 +209,20 @@
         Now I got a bunch of documents. The feeling was awesome! This was the point when I realized that the original
         archiving idea can be done on a grand scale. It was good to see a couple of hundred gigabytes of documents on my
         hard disk, but you know what would be better? Indexing them into a search engine, then having a way to search
-        and view them.Initially I had little experience with indexing big datasets. I used <a
+        and view them. Initially I had little experience with indexing big datasets. I used <a
             href="https://solr.apache.org/">Solr</a> a while ago (like 6 years ago lol) so my initial idea came down to
         use that for the indexing. However, just by looking around for a bit before starting to work on the
         implementation I found <a href="https://www.elastic.co/what-is/elasticsearch">Elasticsearch</a>. It seemed to be
         superior over Solr in almost every way possible (except it was managed by a company but whatever). The major
-        selling point was that it was easier to integrate with. As far as I know, bot of them are just a wrapper around
+        selling point was that it was easier to integrate with. As far as I know, both of them are just a wrapper around
         Lucene so the performance should be fairly similar. Maybe once it will be worthwhile to rewrite the application
         suite to use pure Lucene without actually doing <a href="http://wiki.c2.com/?PrematureOptimization=">premature
         optimization</a>. However, until then, Elasticsearch is the name of the game.
     </p>
     <p>
         After figuring out how indexing can be done, I immediately started to work. Extended the downloader application
-        with code that indexed the downloaded documents that passed verification, then deleted the existing dataset to
-        free up space and started the whole downloading part yet again in the next night.
+        with code that indexed the downloaded and verified documents. Then I deleted the existing dataset to
+        free up space, and started the whole downloading part yet again in the next night.
     </p>
     <p>
         The indexing worked remarkably well, so I started to work on a web frontend that could be used to search and
@@ -263,10 +264,9 @@
         Soon the frontend was finished and I had some time to actually search and read the documents I collected. I
         remember that I wanted to search something obscure. I was studying gardening back then, so my first search was
         for the lichen <b>"Xanthoria parietina"</b>. To my surprise, I got back around a hundred documents from a 2.3
-        million
-        sample size. Honestly, I was surprised. Some of them were quite interesting. Like whom wouldn't want to read
-        the <i>"Detection of polysaccharides and ultrastructural modification of the photobiont cell wall produced by
-        two arginase isolectins from Xanthoria parietina"</i>?
+        million sample size. Honestly, I was surprised. Some of them were quite interesting. Like whom wouldn't want to
+        read the <i>"Detection of polysaccharides and ultrastructural modification of the photobiont cell wall produced
+        by two arginase isolectins from Xanthoria parietina"</i>?
     </p>
 
     <h2>Saving space</h2>
@@ -387,7 +387,7 @@
         port for each and every operation system. A hustle to deal with.
     </p>
 
-    <h3>Welcome MongoDB</h3>
+    <h2>Welcome MongoDB</h2>
 
     <p>
         As described earlier, <a href="https://www.mysql.com/">MySQL</a> was good for a while. For like the first 5-10
@@ -421,9 +421,57 @@
         only run on one core, so even if my "type" and status" fields are indexed, it takes a significant amount of time
         for one CPU core to sum up a 100 million documents. As far as I know, there is no way to really speed this up. I
         could do a select and count for each document type (i.e. 8 queries instead of one with a groupby) but that would
-        be only a band-aid. MongoDB should add some kind of partitioning for these queries, otherwise, I'll ned to wait
+        be only a band-aid. MongoDB should add some kind of partitioning for these queries, otherwise, I'll need to wait
         half an hour to get a result when I'll have 1 billion documents (yes, that's still my long term target).
     </p>
+
+    <h2>Having a queue</h2>
+
+    <p>
+        One more small-ish problem popped up right after the MongoDB migration. The application did a lot of updates on
+        documents, and that felt unnecessary. A document or a document location shouldn't be in the database as long as
+        it is not processed.
+    </p>
+    <p>
+        Because of this, I added a queue between the Generator and Downloader applications (for document locations), and
+        the Downloader and Vault applications (documents). The choice for the queue technology was easy. I used
+        <a href="https://activemq.apache.org/components/artemis/">Apache ActiveMQ Artemis</a> because I had the
+        opportunity to use it at work and was super satisfied with it.
+    </p>
+
+    <h2>This story is more than only PDFs</h2>
+
+    <p>
+        After hitting 10 million documents, I got addicted. I wanted to download more and more "knowledge" (and spam,
+        restaurant menus, wedding invitation cards and the like). Because of this, I wanted to support more and more
+        file types. Adding TXT documents is easy, but adding something like DOC, DOCX, PPT and similar "nonsense" is a
+        lot harder to do.
+    </p>
+    <p>
+        Fortunately, I found the <a href="https://tika.apache.org/">Apache Tika</a> project pretty
+        quickly. Tika has an abstraction layer over "a thousand different file types" (at least according to their about
+        page). It had parsers for everything that I needed, from <a
+            href="https://en.wikipedia.org/wiki/Rich_Text_Format">RTF</a> to <a
+            href="https://en.wikipedia.org/wiki/Comparison_of_e-book_formats#FictionBook_(fb2)">FB2</a>. It was
+        tremendously helpful, so I even contributed something back in the form of bugreports (see <a
+            href="https://issues.apache.org/jira/browse/TIKA-3839">this</a> and <a
+            href="https://issues.apache.org/jira/browse/TIKA-3832">this</a>).
+    </p>
+    <p>
+        In the end, the project started to support the following document types: <b>PDF</b>, <b>DOC</b>, <b>DOCX</b>,
+        <b>PPT</b>, <b>PPTX</b>, <b>XLS</b> <b>XLSX</b>, <b>RTF</b>, <b>MOBI</b>, <b>EPUB</b>, <b>FB2</b> and <b>TXT</b>.
+        The list is definitely a lot longer that I initially planned, and I found a lot of file types that were
+        documents, but I never heard about them before.
+    </p>
+
+    <!--
+    Queue
+        Language detection
+        staging application
+        conductor application
+        Hardware
+        Interview
+    -->
 </div>
 </body>
 </html>
